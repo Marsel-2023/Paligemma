@@ -1,13 +1,18 @@
+import time
 import streamlit as st
 from gradio_client import Client, file
 import warnings
 import os
+
 # Настройки предупреждений
 warnings.filterwarnings("ignore", category=FutureWarning)
 
 # Инициализация клиента
 dir_path = 'extracted_text_boxes/'
 client = Client("big-vision/paligemma")
+
+# Задержка перед следующим запросом
+time.sleep(2)  # Задержка в 2 секунды
 
 # Загружаем токен из переменной окружения
 haggi_token = os.getenv("HUGGING_FACE_TOKEN")
