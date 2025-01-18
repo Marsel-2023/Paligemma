@@ -16,7 +16,7 @@ def get_client():
         raise ValueError("Токен не найден. Убедитесь, что переменная окружения HUGGING_FACE_TOKEN установлена.")
 
     # Инициализация клиента
-    return Client("big-vision/paligemma", token="ВАШ_ТОКЕН")
+    return Client("big-vision/paligemma")
 
 
 # Используем кэшированный клиент
