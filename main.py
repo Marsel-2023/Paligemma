@@ -1,4 +1,3 @@
-import time
 import streamlit as st
 from gradio_client import Client, file
 import warnings
@@ -7,19 +6,21 @@ import os
 # Настройки предупреждений
 warnings.filterwarnings("ignore", category=FutureWarning)
 
-# Инициализация клиента
-dir_path = 'extracted_text_boxes/'
-# Проверка и инициализация клиента
-if "client" not in st.session_state:
-    st.session_state.client = Client("big-vision/paligemma")
 
-client = st.session_state.client
+@st.cache_resource
+def get_client():
+    # Загружаем токен из переменной окружения
+    haggi_token = os.getenv("HUGGING_FACE_TOKEN")
 
-# Загружаем токен из переменной окружения
-haggi_token = os.getenv("HUGGING_FACE_TOKEN")
+    if not haggi_token:
+        raise ValueError("Токен не найден. Убедитесь, что переменная окружения HUGGING_FACE_TOKEN установлена.")
 
-if not haggi_token:
-    raise ValueError("Токен не найден. Убедитесь, что переменная окружения HUGGING_FACE_TOKEN установлена.")
+    # Инициализация клиента
+    return Client("big-vision/paligemma", token="ВАШ_ТОКЕН")
+
+
+# Используем кэшированный клиент
+client = get_client()
 
 
 def analyze_image(image_path, prompt):
@@ -28,7 +29,7 @@ def analyze_image(image_path, prompt):
             file(image_path),
             prompt,
             "paligemma-3b-mix-448",  # Модель
-            "greedy",                 # Алгоритм декодирования
+            "greedy",  # Алгоритм декодирования
             api_name="/compute"
         )
         token_value = result[0]['value'][0]['token']
@@ -36,6 +37,7 @@ def analyze_image(image_path, prompt):
     except Exception as e:
         st.error(f"Ошибка: {str(e)}")
         return None
+
 
 def main():
     st.title("Распознавание изображении - Paligemma от Google")
@@ -61,6 +63,7 @@ def main():
                 st.success(f"На фотографии: {token_value}")
         else:
             st.error("Пожалуйста, загрузите изображение и введите промпт.")
+
 
 if __name__ == "__main__":
     main()
