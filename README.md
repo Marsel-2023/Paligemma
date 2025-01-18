@@ -1,4 +1,3 @@
-```markdown
 # Paligemma Web Application
 
 ### Описание проекта
@@ -14,7 +13,7 @@
 #### 1. Клонирование репозитория
 
 Клонируйте данный репозиторий на локальный компьютер:
-```
+
 ```bash
 git clone https://github.com/Marsel-2023/Paligemma.git
 ```
