@@ -9,10 +9,11 @@ warnings.filterwarnings("ignore", category=FutureWarning)
 
 # Инициализация клиента
 dir_path = 'extracted_text_boxes/'
-client = Client("big-vision/paligemma")
+# Проверка и инициализация клиента
+if "client" not in st.session_state:
+    st.session_state.client = Client("big-vision/paligemma")
 
-# Задержка перед следующим запросом
-time.sleep(2)  # Задержка в 2 секунды
+client = st.session_state.client
 
 # Загружаем токен из переменной окружения
 haggi_token = os.getenv("HUGGING_FACE_TOKEN")
